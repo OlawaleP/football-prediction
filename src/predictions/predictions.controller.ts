@@ -43,7 +43,6 @@ export class PredictionsController {
         throw new HttpException('Date parameter is required', HttpStatus.BAD_REQUEST);
       }
 
-      // Validate date format (YYYY-MM-DD)
       if (!this.isValidDateFormat(date)) {
         throw new HttpException(
           'Invalid date format. Please use YYYY-MM-DD format.',
@@ -189,7 +188,6 @@ export class PredictionsController {
       const result: PredictionsResult = await this.predictionsService.getAllPredictionsForDate(date);
       const predictions = result.predictions;
 
-      // Calculate statistics
       const stats = this.calculatePredictionStats(predictions);
 
       return {
@@ -218,13 +216,11 @@ export class PredictionsController {
     const highConfidenceMatches = predictions.filter(p => p.homeWinChance > 70).length;
     const mediumConfidenceMatches = predictions.filter(p => p.homeWinChance >= 50 && p.homeWinChance <= 70).length;
 
-    // Competition breakdown
     const competitionBreakdown: { [competition: string]: number } = {};
     predictions.forEach(p => {
       competitionBreakdown[p.competition] = (competitionBreakdown[p.competition] || 0) + 1;
     });
 
-    // Country breakdown
     const countryBreakdown: { [country: string]: number } = {};
     predictions.forEach(p => {
       if (p.country) {
@@ -232,12 +228,10 @@ export class PredictionsController {
       }
     });
 
-    // Average home win chance
     const averageHomeWinChance = totalMatches > 0 
       ? Math.round(predictions.reduce((sum, p) => sum + p.homeWinChance, 0) / totalMatches)
       : 0;
 
-    // Odds statistics
     const validOdds = predictions.filter(p => p.homeWinOdds && p.homeWinOdds > 0);
     const oddsRange = validOdds.length > 0 ? {
       minHomeWinOdds: Math.min(...validOdds.map(p => p.homeWinOdds!)),
@@ -261,13 +255,11 @@ export class PredictionsController {
   }
 
   private isValidDateFormat(date: string): boolean {
-    // Check if date matches YYYY-MM-DD format
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!dateRegex.test(date)) {
       return false;
     }
 
-    // Check if it's a valid date
     const parsedDate = new Date(date);
     const [year, month, day] = date.split('-').map(Number);
     

@@ -9,17 +9,17 @@ import { FootballApiService } from './football-api.service';
 
 @Module({
   imports: [
-    ConfigModule, // Ensure ConfigModule is imported for environment variables
+    ConfigModule, 
     MongooseModule.forFeature([
       { name: Prediction.name, schema: PredictionSchema }
     ]),
     HttpModule.register({
-      timeout: 10000, // 10 second timeout for HTTP requests
+      timeout: 10000, 
       maxRedirects: 5,
     }),
   ],
   controllers: [PredictionsController],
   providers: [PredictionsService, FootballApiService],
-  exports: [PredictionsService], // Export service if needed by other modules
+  exports: [PredictionsService], 
 })
 export class PredictionsModule {}

@@ -41,21 +41,17 @@ export class PredictionsService {
       };
     }
 
-    // Fetch fresh data from Betminer API
     this.logger.log(`No cached data found, fetching from Betminer API for ${date}`);
     const apiPredictions = await this.footballApiService.getPredictions(date);
     console.log(`Fetched ${apiPredictions.length} predictions from Betminer API for ${date}`);
 
-    // Save to cache
     if (apiPredictions.length > 0) {
       await this.cacheApiPredictions(apiPredictions, date);
     }
 
-    // Filter predictions where home team has >50% win chance
     const filteredPredictions = this.filterPredictionsByHomeWinChance(apiPredictions);
     const transformedPredictions = this.transformApiToDto(filteredPredictions);
     
-    // Apply team filter if provided
     const finalPredictions = teamFilter 
       ? transformedPredictions.filter(p => 
           p.homeTeam.toLowerCase().includes(teamFilter.toLowerCase()) ||
@@ -132,10 +128,8 @@ export class PredictionsService {
 
   private async cacheApiPredictions(predictions: any[], date: string): Promise<void> {
     try {
-      // Remove old cache for this date
       await this.predictionModel.deleteMany({ date }).exec();
 
-      // Save new predictions to cache
       const predictionDocs = predictions.map(prediction => ({
         date,
         homeTeam: prediction.homeTeam || 'Unknown Home',
@@ -160,11 +154,9 @@ export class PredictionsService {
     }
   }
 
-  // Additional method to get all predictions (not just >50% home win chance)
   async getAllPredictionsForDate(date: string, teamFilter?: string): Promise<PredictionsResult> {
     this.logger.log(`Fetching ALL predictions for date: ${date}`);
 
-    // Check cache first
     const cacheThreshold = new Date(Date.now() - 2 * 60 * 60 * 1000);
     const cachedPredictions = await this.predictionModel
       .find({
@@ -205,7 +197,6 @@ export class PredictionsService {
       };
     }
 
-    // Fetch fresh data
     const apiPredictions = await this.footballApiService.getPredictions(date);
 
     if (apiPredictions.length > 0) {
@@ -214,7 +205,6 @@ export class PredictionsService {
 
     const transformedPredictions = this.transformApiToDto(apiPredictions);
     
-    // Apply team filter if provided
     const finalPredictions = teamFilter 
       ? transformedPredictions.filter(p => 
           p.homeTeam.toLowerCase().includes(teamFilter.toLowerCase()) ||
