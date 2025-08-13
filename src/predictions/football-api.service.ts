@@ -93,7 +93,6 @@ export class FootballApiService {
 
   private async getBetminerPredictions(date: string): Promise<TransformedPrediction[]> {
     try {
-      // Betminer API expects dateFrom and dateTo, so we use the same date for both
       const url = `${this.baseUrl}/${date}/${date}`;
       
       this.logger.log(`Fetching predictions from Betminer for date: ${date}`);
@@ -104,7 +103,7 @@ export class FootballApiService {
             'x-rapidapi-key': this.rapidApiKey,
             'x-rapidapi-host': this.rapidApiHost,
           },
-          timeout: 10000, // 10 second timeout
+          timeout: 10000, 
         })
       );
 
@@ -124,7 +123,6 @@ export class FootballApiService {
         data: error.response?.data,
       });
       
-      // Fallback to mock data on API error
       this.logger.warn('Falling back to mock data due to API error');
       return this.getMockPredictions(date);
     }
@@ -132,7 +130,6 @@ export class FootballApiService {
 
   private transformBetminerData(betminerMatches: BetminerMatch[]): TransformedPrediction[] {
     return betminerMatches.map(match => {
-      // Calculate win percentages from odds using implied probability
       const homeWinChance = this.calculateWinChanceFromOdds(match.odds.home_win_odds) || 
                            this.parseConfidence(match.predictions_conf.HOME_WIN) || 0;
       
@@ -142,7 +139,6 @@ export class FootballApiService {
       const drawChance = this.calculateWinChanceFromOdds(match.odds.draw_odds) || 
                         this.parseConfidence(match.predictions_conf.DRAW) || 0;
 
-      // Extract time from date string (format: "2025-08-14 00:00:00")
       const matchTime = this.extractTimeFromDate(match.details.date);
 
       return {
@@ -153,14 +149,13 @@ export class FootballApiService {
         drawChance,
         matchTime,
         competition: match.details.competition_full || match.details.competition,
-        date: match.details.date.split(' ')[0], // Extract date part
+        date: match.details.date.split(' ')[0], 
         country: match.details.country,
         homeWinOdds: parseFloat(match.odds.home_win_odds) || undefined,
         awayWinOdds: parseFloat(match.odds.away_win_odds) || undefined,
         drawOdds: parseFloat(match.odds.draw_odds) || undefined,
       };
     }).filter(prediction => {
-      // Filter out invalid predictions
       return prediction.homeTeam && prediction.awayTeam && prediction.homeWinChance > 0;
     });
   }
@@ -169,8 +164,6 @@ export class FootballApiService {
     const odds = parseFloat(oddsString);
     if (isNaN(odds) || odds <= 0) return null;
     
-    // Convert odds to implied probability percentage
-    // Implied probability = (1 / decimal odds) × 100
     return Math.round((1 / odds) * 100);
   }
 
@@ -182,10 +175,9 @@ export class FootballApiService {
 
   private extractTimeFromDate(dateString: string): string {
     try {
-      // Format: "2025-08-14 00:00:00"
       const parts = dateString.split(' ');
       if (parts.length >= 2) {
-        const timePart = parts[1].substring(0, 5); // Get HH:MM
+        const timePart = parts[1].substring(0, 5); 
         return timePart;
       }
     } catch (error) {
@@ -195,7 +187,6 @@ export class FootballApiService {
   }
 
   private getMockPredictions(date: string): TransformedPrediction[] {
-    // Enhanced mock data that matches the Betminer format
     const mockPredictions: TransformedPrediction[] = [
       {
         homeTeam: 'Real Soacha',
