@@ -1,4 +1,3 @@
-// dto/predictions.dto.ts
 import { IsString, IsNumber, IsOptional, Min, Max } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -77,7 +76,6 @@ export class GetPredictionsQueryDto {
   includeAll?: boolean;
 }
 
-// schema/prediction.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -127,14 +125,12 @@ export class Prediction {
   @Prop({ required: true, default: Date.now })
   cachedAt: Date;
 
-  // Index for efficient querying
   @Prop({ index: true })
   dateIndex?: string;
 }
 
 export const PredictionSchema = SchemaFactory.createForClass(Prediction);
 
-// Create compound indexes for better performance
 PredictionSchema.index({ date: 1, cachedAt: -1 });
 PredictionSchema.index({ date: 1, homeWinChance: -1 });
 PredictionSchema.index({ homeTeam: 'text', awayTeam: 'text' });
