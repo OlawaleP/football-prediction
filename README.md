@@ -23,7 +23,7 @@ A NestJS backend service that integrates with external football predictions APIs
 
 1. **Clone and install dependencies:**
 ```bash
-git clone 
+git clone https://github.com/OlawaleP/football-prediction
 cd football-predictions-backend
 npm install
 ```
@@ -174,19 +174,6 @@ Popular APIs you can integrate:
 - RapidAPI Football
 - SportMonks
 
-## Testing
-
-```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:cov
-```
-
 ## Deployment
 
 ### Docker Deployment (Optional)
@@ -218,7 +205,3 @@ Make sure to set environment variables in your deployment platform.
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
-
-## License
-
-MIT License - see LICENSE file for details
