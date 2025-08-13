@@ -4,12 +4,12 @@ A NestJS backend service that integrates with external football predictions APIs
 
 ## Features
 
-- 🏈 Fetch football predictions from external APIs (with mock fallback)
-- 📊 Filter matches by home team win probability (>50%)
-- 🗄️ MongoDB caching for performance (2-hour cache TTL)
-- 🔍 Search/filter by team name
-- ✅ Input validation and error handling
-- 🚀 RESTful API with clear response structure
+- Fetch football predictions from external APIs (with mock fallback)
+- Filter matches by home team win probability (>50%)
+- MongoDB caching for performance (2-hour cache TTL)
+- Search/filter by team name
+- Input validation and error handling
+- RESTful API with clear response structure
 
 ## Quick Start
 
@@ -35,8 +35,10 @@ cp .env.example .env
 
 Edit `.env` with your configuration:
 - `MONGODB_URI`: Your MongoDB connection string
-- `FOOTBALL_API_KEY`: (Optional) Your external API key
-- `FOOTBALL_API_URL`: (Optional) Your external API URL
+- `RAPIDAPI_KEY`: Your external API key
+- `RAPIDAPI_HOST`:  Your external API URL
+- `BETMINER_BASE_URL`:  Your external API URL
+- `FOOTBALL_API_URL`:  Your external API URL
 
 3. **Start MongoDB:**
 ```bash
@@ -98,38 +100,6 @@ curl "http://localhost:3001/predictions?date=2025-08-12"
 **GET** `/predictions/health`
 
 Returns API status and timestamp.
-
-## Project Structure
-
-```
-src/
-├── app.module.ts              # Main application module
-├── main.ts                    # Application entry point
-└── predictions/
-    ├── predictions.module.ts   # Predictions feature module
-    ├── predictions.controller.ts # API endpoints
-    ├── predictions.service.ts   # Business logic
-    ├── football-api.service.ts  # External API integration
-    ├── dto/
-    │   └── predictions.dto.ts   # Data transfer objects
-    └── schemas/
-        └── prediction.schema.ts # MongoDB schema
-```
-
-## Configuration
-
-### Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Server port | 3001 |
-| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/football-predictions` |
-| `FOOTBALL_API_KEY` | External API key (optional) | - |
-| `FOOTBALL_API_URL` | External API URL (optional) | - |
-
-### Mock Mode
-
-If no `FOOTBALL_API_KEY` is provided, the service runs in mock mode with sample data. This is perfect for development and testing.
 
 ## Caching Strategy
 
