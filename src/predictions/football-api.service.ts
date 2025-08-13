@@ -66,14 +66,16 @@ export class FootballApiService {
   private readonly logger = new Logger(FootballApiService.name);
   private readonly mockMode: boolean;
   private readonly rapidApiKey: string;
-  private readonly rapidApiHost = 'betminer.p.rapidapi.com';
-  private readonly baseUrl = 'https://betminer.p.rapidapi.com/bm/predictions/arrays';
+  private readonly rapidApiHost: string;
+  private readonly baseUrl: string;
 
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
   ) {
-    this.rapidApiKey = this.configService.get('RAPIDAPI_KEY');
+    this.rapidApiKey = this.configService.get<string>('RAPIDAPI_KEY');
+    this.rapidApiHost = this.configService.get<string>('RAPIDAPI_HOST');
+    this.baseUrl = this.configService.get<string>('BETMINER_BASE_URL');
     this.mockMode = !this.rapidApiKey;
     
     if (this.mockMode) {
