@@ -5,7 +5,6 @@ export class GetPredictionsDto {
   @IsDateString()
   @IsNotEmpty()
   @Transform(({ value }) => {
-    // Ensure date is in YYYY-MM-DD format
     if (value && typeof value === 'string') {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
