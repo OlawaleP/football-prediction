@@ -207,10 +207,6 @@ CMD ["npm", "run", "start:prod"]
 ### Cloud Deployment
 
 The application is ready for deployment to:
-- Heroku
-- AWS (Elastic Beanstalk, ECS)
-- Google Cloud Platform
-- Railway
 - Render
 
 Make sure to set environment variables in your deployment platform.
