@@ -24,7 +24,7 @@ A NestJS backend service that integrates with external football predictions APIs
 1. **Clone and install dependencies:**
 ```bash
 git clone https://github.com/OlawaleP/football-prediction
-cd football-predictions-backend
+cd football-prediction
 npm install
 ```
 
