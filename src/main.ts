@@ -6,10 +6,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   // Enable CORS for frontend integration
-  app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
-    credentials: true,
-  });
+app.enableCors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://ftbpredict.netlify.app'
+  ],
+  credentials: true,
+});
 
   // Enable global validation pipes
   app.useGlobalPipes(
